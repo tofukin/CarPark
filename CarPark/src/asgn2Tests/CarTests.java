@@ -16,11 +16,20 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import asgn2Exceptions.VehicleException;
+import asgn2Vehicles.Car;
+
 /**
  * @author hogan
  *
  */
 public class CarTests {
+	
+	private String CarID = "C0";
+	private String MotorCycleID = "M0";
+	private int arrivalTime = 1;
+	private int zeroArrivalTime = 0;
+	private int negativeArrivalTime = -1;
 
 	/**
 	 * @throws java.lang.Exception
@@ -54,10 +63,29 @@ public class CarTests {
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Car#isSmall()}.
+	 * @throws VehicleException 
 	 */
 	@Test
-	public void testIsSmall() {
-		fail("Not yet implemented"); // TODO
+	public void testIsSmall() throws VehicleException {
+		Car car = new Car(CarID, arrivalTime, true);
+		assertTrue(car.isSmall());
+		//fail("Not yet implemented"); // TODO
+	}
+	
+	@Test
+	public void testNotSmall() throws VehicleException {
+		Car car = new Car(CarID, arrivalTime, false);
+		assertFalse(car.isSmall());
+	}
+	
+	@Test (expected = VehicleException.class)
+	public void testCarNegativeArrival() throws VehicleException {
+		Car car = new Car(CarID, negativeArrivalTime, false);
+	}
+	
+	@Test (expected = VehicleException.class)
+	public void testCarZeroArrival() throws VehicleException {
+		Car car = new Car(CarID, zeroArrivalTime, false);
 	}
 
 }
