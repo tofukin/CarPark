@@ -12,8 +12,6 @@ package asgn2Tests;
 
 import static org.junit.Assert.*;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import asgn2Exceptions.VehicleException;
@@ -26,40 +24,10 @@ import asgn2Vehicles.Car;
 public class CarTests {
 	
 	private String CarID = "C0";
-	private String MotorCycleID = "M0";
 	private int arrivalTime = 1;
 	private int zeroArrivalTime = 0;
 	private int negativeArrivalTime = -1;
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
-	}
-
-	/**
-	 * Test method for {@link asgn2Vehicles.Car#toString()}.
-	 */
-	@Test
-	public void testToString() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link asgn2Vehicles.Car#Car(java.lang.String, int, boolean)}.
-	 */
-	@Test
-	public void testCar() {
-		fail("Not yet implemented"); // TODO
-	}
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Car#isSmall()}.
@@ -86,6 +54,17 @@ public class CarTests {
 	@Test (expected = VehicleException.class)
 	public void testCarZeroArrival() throws VehicleException {
 		Car car = new Car(CarID, zeroArrivalTime, false);
+	}
+	
+	@Test
+	public void testCarPositiveArrival() throws VehicleException {
+		Car car = new Car(CarID, arrivalTime, false);
+	}
+	
+	@Test
+	public void testCarVehID() throws VehicleException {
+		Car car = new Car(CarID, arrivalTime, false);
+		assertTrue(car.getVehID() == CarID);
 	}
 
 }
