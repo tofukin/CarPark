@@ -32,7 +32,7 @@ public class MotorCycleTests {
 	private int zeroArrivalTime = 0;
 	private int negativeArrivalTime = -1;
 	private int parkingTime = 2;
-	private int intendedDuration = 10;
+	private int intendedDuration = 20;
 	private int exitTime = 3;
 	
 	@Test (expected = VehicleException.class)
@@ -141,10 +141,56 @@ public class MotorCycleTests {
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#enterParkedState(int, int)}.
+	 * @throws VehicleException 
 	 */
 	@Test
-	public void testEnterParkedState() {
-		fail("Not yet implemented"); // TODO
+	public void testEnterParkedState() throws VehicleException {
+		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
+		mc.enterParkedState(parkingTime, intendedDuration);
+	}
+	
+	@Test (expected = VehicleException.class)
+	public void testEnterParkedStateWhileParked() throws VehicleException {
+		int parkT = 4;
+		int intend = 20; // for park the second time
+		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
+		mc.enterParkedState(parkingTime, intendedDuration);
+		mc.enterParkedState(parkT, intend);
+	}
+	
+	@Test (expected = VehicleException.class)
+	public void testEnterParkedStateWhileInQueue() throws VehicleException {
+		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
+		mc.enterQueuedState();
+		mc.enterParkedState(parkingTime, intendedDuration);
+	}
+	
+	@Test (expected = VehicleException.class)
+	public void testEnterParkedStateWhileParkingTimeLessThanZero() throws VehicleException {
+		int parkT = -1;
+		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
+		mc.enterParkedState(parkT, intendedDuration);
+	}
+	
+	@Test (expected = VehicleException.class)
+	public void testEnterParkedStateWhileDurationLessThanMinimun() throws VehicleException {
+		int intend = 10;
+		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
+		mc.enterParkedState(parkingTime, intend);
+	}
+	
+	@Test
+	public void testEnterParkedStateGetParkingTime() throws VehicleException {
+		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
+		mc.enterParkedState(parkingTime, intendedDuration);
+		assertEquals(parkingTime, mc.getParkingTime());
+	}
+	
+	@Test
+	public void testEnterParkedStateGetDepartureTime() throws VehicleException {
+		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
+		mc.enterParkedState(parkingTime, intendedDuration);
+		assertEquals(parkingTime + intendedDuration, mc.getDepartureTime());
 	}
 
 	/**
