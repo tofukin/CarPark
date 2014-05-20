@@ -192,6 +192,13 @@ public class MotorCycleTests {
 		mc.enterParkedState(parkingTime, intendedDuration);
 		assertEquals(parkingTime + intendedDuration, mc.getDepartureTime());
 	}
+	
+	@Test
+	public void testEnterParkedStateIsParked() throws VehicleException {
+		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
+		mc.enterParkedState(parkingTime, intendedDuration);
+		assertTrue(mc.isParked());
+	}
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#exitParkedState(int)}.
