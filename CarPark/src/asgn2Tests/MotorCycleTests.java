@@ -284,26 +284,55 @@ public class MotorCycleTests {
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#wasQueued()}.
+	 * @throws VehicleException 
 	 */
 	@Test
-	public void testWasQueued() {
-		fail("Not yet implemented"); // TODO
+	public void testWasQueued() throws VehicleException {
+		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
+		mc.enterQueuedState();
+		mc.exitQueuedState(exitTime);
+		assertTrue(mc.wasQueued());
+	}
+	
+	@Test
+	public void testWasNotQueued() throws VehicleException {
+		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
+		assertFalse(mc.wasQueued());
 	}
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#wasParked()}.
+	 * @throws VehicleException 
 	 */
 	@Test
-	public void testWasParked() {
-		fail("Not yet implemented"); // TODO
+	public void testWasParked() throws VehicleException {
+		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
+		mc.enterParkedState(parkingTime, intendedDuration);
+		mc.exitParkedState(departureTime);
+		assertTrue(mc.wasParked());
+	}
+	
+	@Test
+	public void testWasNotParked() throws VehicleException {
+		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
+		assertFalse(mc.wasParked());
 	}
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#isSatisfied()}.
 	 */
 	@Test
-	public void testIsSatisfied() {
-		fail("Not yet implemented"); // TODO
+	public void testIsSatisfied() throws VehicleException {
+		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
+		mc.enterParkedState(parkingTime, intendedDuration);
+		mc.exitParkedState(departureTime);
+		assertTrue(mc.isSatisfied());
+	}
+	
+	@Test
+	public void testIsNotSatisfied() throws VehicleException {
+		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
+		assertFalse(mc.isSatisfied());
 	}
 
 }
