@@ -34,6 +34,7 @@ public class MotorCycleTests {
 	private int parkingTime = 2;
 	private int intendedDuration = 20;
 	private int exitTime = 3;
+	private int departureTime = 22;
 	
 	@Test (expected = VehicleException.class)
 	public void testNegativeArrival() throws VehicleException {
@@ -93,14 +94,6 @@ public class MotorCycleTests {
 		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
 		mc.enterParkedState(parkingTime, intendedDuration);
 		mc.enterQueuedState();
-	}
-
-	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#exitQueuedState(int)}.
-	 */
-	@Test
-	public void testExitQueuedState() {
-		fail("Not yet implemented"); // TODO
 	}
 	
 	@Test (expected = VehicleException.class)
@@ -180,13 +173,6 @@ public class MotorCycleTests {
 	}
 	
 	@Test
-	public void testEnterParkedStateGetParkingTime() throws VehicleException {
-		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
-		mc.enterParkedState(parkingTime, intendedDuration);
-		assertEquals(parkingTime, mc.getParkingTime());
-	}
-	
-	@Test
 	public void testEnterParkedStateGetDepartureTime() throws VehicleException {
 		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
 		mc.enterParkedState(parkingTime, intendedDuration);
@@ -200,52 +186,100 @@ public class MotorCycleTests {
 		assertTrue(mc.isParked());
 	}
 
-	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#exitParkedState(int)}.
-	 */
-	@Test
-	public void testExitParkedStateInt() {
-		fail("Not yet implemented"); // TODO
+	
+	@Test (expected = VehicleException.class)
+	public void testExitParkedStateWhereNotParked() throws VehicleException {
+		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
+		mc.exitParkedState(departureTime);
 	}
-
-	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#exitParkedState()}.
-	 */
+	
+	@Test (expected = VehicleException.class)
+	public void testExitParkedStateWhereInQueue() throws VehicleException {
+		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
+		mc.enterQueuedState();
+		mc.exitParkedState(departureTime);
+	}
+	
+	@Test (expected = VehicleException.class)
+	public void testExitParkedStateWhereDepartureTimeEarlierThenParkingTime() throws VehicleException {
+		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
+		int parkT = 50; // a value for parking time later then departure time
+		mc.enterParkedState(parkT, intendedDuration);
+		mc.exitParkedState(departureTime);
+	}
+	
 	@Test
-	public void testExitParkedState() {
-		fail("Not yet implemented"); // TODO
+	public void testExitParkedStateGetIsParked() throws VehicleException {
+		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
+		mc.enterParkedState(parkingTime, intendedDuration);
+		mc.exitParkedState(departureTime);
+		assertFalse(mc.isParked());
+	}
+	
+	@Test
+	public void testExitParkedStateGetWasParked() throws VehicleException {
+		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
+		mc.enterParkedState(parkingTime, intendedDuration);
+		mc.exitParkedState(departureTime);
+		assertTrue(mc.wasParked());
 	}
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#isParked()}.
+	 * @throws VehicleException 
 	 */
 	@Test
-	public void testIsParked() {
-		fail("Not yet implemented"); // TODO
+	public void testIsParked() throws VehicleException {
+		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
+		mc.enterParkedState(parkingTime, intendedDuration);
+		assertTrue(mc.isParked());
 	}
+	
+	@Test
+	public void testIsNotParked() throws VehicleException {
+		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
+		assertFalse(mc.isParked());
+	}
+	
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#isQueued()}.
+	 * @throws VehicleException 
 	 */
 	@Test
-	public void testIsQueued() {
-		fail("Not yet implemented"); // TODO
+	public void testIsQueued() throws VehicleException {
+		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
+		mc.enterQueuedState();
+		assertTrue(mc.isQueued());
+	}
+	
+	@Test
+	public void testIsNotQueued() throws VehicleException {
+		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
+		assertFalse(mc.isQueued());
 	}
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#getParkingTime()}.
+	 * @throws VehicleException 
 	 */
 	@Test
-	public void testGetParkingTime() {
-		fail("Not yet implemented"); // TODO
+	public void testGetParkingTime() throws VehicleException {
+		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
+		mc.enterParkedState(parkingTime, intendedDuration);
+		assertEquals(parkingTime, mc.getParkingTime());
 	}
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#getDepartureTime()}.
+	 * @throws VehicleException 
 	 */
 	@Test
-	public void testGetDepartureTime() {
-		fail("Not yet implemented"); // TODO
+	public void testGetDepartureTime() throws VehicleException {
+		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
+		mc.enterParkedState(parkingTime, intendedDuration);
+		mc.exitParkedState(departureTime);
+		assertEquals(departureTime, mc.getDepartureTime());
 	}
 
 	/**
