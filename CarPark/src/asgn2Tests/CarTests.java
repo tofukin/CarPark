@@ -37,7 +37,6 @@ public class CarTests {
 	public void testIsSmall() throws VehicleException {
 		Car car = new Car(CarID, arrivalTime, true);
 		assertTrue(car.isSmall());
-		//fail("Not yet implemented"); // TODO
 	}
 	
 	@Test
