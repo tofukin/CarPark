@@ -22,7 +22,9 @@ import asgn2Exceptions.VehicleException;
  */
 public class Car extends Vehicle {
 	
-	private boolean small; 
+	private boolean small;
+	private String vehID;
+	private int arrivalTime;
 
 	/**
 	 * The Car Constructor - small set at creation, not mutable. 
@@ -33,6 +35,10 @@ public class Car extends Vehicle {
 	 * @throws VehicleException if arrivalTime is <= 0  
 	 */
 	public Car(String vehID, int arrivalTime, boolean small) throws VehicleException {
+		super(vehID, arrivalTime);
+		this.small = small;
+		this.vehID = vehID;
+		this.arrivalTime = arrivalTime;
 	}
 
 	/**
@@ -41,6 +47,7 @@ public class Car extends Vehicle {
 	 * @return true if small parking space, false otherwise
 	 */
 	public boolean isSmall() {
+		return small;
 	}
 
 	/* (non-Javadoc)
@@ -48,5 +55,41 @@ public class Car extends Vehicle {
 	 */
 	@Override
 	public String toString() {
+		String wasQueue;
+		String wasParked;
+		String wasSatisfied;
+		String isSmall;
+		
+		if (super.wasQueued()) {
+			wasQueue = "Exit from Queue: " + super.getParkingTime()
+					+ "\n" + "Queuing Time: " + (super.getParkingTime() - super.getArrivalTime())
+					+ "\n";
+		} else {
+			wasQueue = "Vehicle was not queued \n";
+		}
+		
+		if (super.wasParked()) {
+			wasParked = "Entry to Car Park: " + super.getParkingTime()
+					+ "\n" + "Exit from Car Park: " + super.getDepartureTime()
+					+ "\n" + "Parking Time: " + (super.getDepartureTime() - super.getParkingTime());
+		} else {
+			wasParked = "Vehicle was not parked \n";
+		}
+		
+		if (super.isSatisfied()) {
+			wasSatisfied = "Customer was satisfied";
+		} else {
+			wasSatisfied = "Customer was not satisfied";
+		}
+		
+		if (isSmall()) {
+			isSmall = "Car can use small parking space";
+		} else {
+			isSmall = "Car cannot use small parking space";
+		}
+		
+		return "Vehicle vehID: " + vehID + "\n"
+				+ "Arrival Time: " +  arrivalTime + "\n"
+				+ wasQueue + wasParked + wasSatisfied + isSmall;
 	}
 }
