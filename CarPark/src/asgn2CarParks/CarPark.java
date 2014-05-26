@@ -336,10 +336,11 @@ public class CarPark {
 	 * @return String containing dump of initial carpark state 
 	 */
 	public String initialState() {
-		return "CarPark [maxCarSpaces: " + this.maxCarSpaces
-				+ " maxSmallCarSpaces: " + this.maxSmallCarSpaces 
-				+ " maxMotorCycleSpaces: " + this.maxMotorCycleSpaces 
-				+ " maxQueueSize: " + this.maxQueueSize + "]";
+            return "CarPark \n"
+                    + "Max Car Spaces: " + this.maxCarSpaces + "\n"
+                    + "Max Small Car Spaces: " + this.maxSmallCarSpaces + "\n"
+                    + "Max MotorCycle Spaces: " + this.maxMotorCycleSpaces + "\n"
+                    + "Max Queue Size: " + this.maxQueueSize + "\n";
 	}
 
 	/**
