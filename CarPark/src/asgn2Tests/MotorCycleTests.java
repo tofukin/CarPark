@@ -10,15 +10,14 @@
  */
 package asgn2Tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
+import asgn2Exceptions.SimulationException;
 import asgn2Exceptions.VehicleException;
-import asgn2Simulators.Simulator;
-import asgn2Vehicles.Car;
 import asgn2Vehicles.MotorCycle;
 
 /**

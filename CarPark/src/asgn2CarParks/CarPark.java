@@ -84,9 +84,6 @@ public class CarPark {
 		numSmallCars = 0;
 		numMotorCycles = 0;
 		numDissatisfied = 0;
-		remainCarSpaces = maxCarSpaces - maxSmallCarSpaces;
-		remainSmallCarSpaces = maxSmallCarSpaces;
-		remainMotorCycleSpaces = maxMotorCycleSpaces;
 		count = 0;
 		queue = new ArrayList<Vehicle>();
 		carSpaces = new ArrayList<Vehicle>();
@@ -105,7 +102,7 @@ public class CarPark {
 	 * @throws SimulationException if one or more departing vehicles are not in the car park when operation applied
 	 */
 	public void archiveDepartingVehicles(int time,boolean force) throws VehicleException, SimulationException {
-		if (force) {
+		if (force) { // Clear all vehicles from the carpark when it force to to
 			temp.clear();
 			temp.addAll(carSpaces);
 			for (Vehicle v : temp) {
@@ -130,11 +127,11 @@ public class CarPark {
 				status += setVehicleMsg(v, "P", "A");
 			}
 		} else {
-			
+			// if not force to leave the carpark, check the vehichle is time to leave or not
 			temp.clear();
 			temp.addAll(carSpaces);
 			for (Vehicle v : temp) {
-				if (v.getDepartureTime() <= time) {
+				if (v.getDepartureTime() <= time) { 
 					unparkVehicle(v, time);
 					past.add(v);
 					status += setVehicleMsg(v, "P", "A");
@@ -365,19 +362,17 @@ public class CarPark {
 		if (!spacesAvailable(v)) {
 			throw new SimulationException ("No Spaces.");
 		}
-		// Calculate the spaces remaining
+		// park the vehicle in available space
 		if (v instanceof Car) {
 			if (((Car) v).isSmall()) {
 				if (remainSmallCarSpaces > 1) {
 					numSmallCars++;
 					smallCarSpaces.add(v);
-					remainSmallCarSpaces--;
 					v.enterParkedState(time, intendedDuration);
 				} else {
 					if (remainCarSpaces > 1) {
 						numSmallCars++;
 						carSpaces.add(v);
-						remainCarSpaces--;
 						v.enterParkedState(time, intendedDuration);
 					} else {
 						throw new SimulationException ("No Spaces.");
@@ -386,20 +381,17 @@ public class CarPark {
 			} else {
 				numCars++;
 				carSpaces.add(v);
-				remainCarSpaces--;
 				v.enterParkedState(time, intendedDuration);
 			}
 		} else {
 			if (remainMotorCycleSpaces > 1) {
 				numMotorCycles++;
 				motorCycleSpaces.add(v);
-				remainMotorCycleSpaces--;
 				v.enterParkedState(time, intendedDuration);
 			} else {
 				if (remainSmallCarSpaces > 1) {
 					numMotorCycles++;
 					smallCarSpaces.add(v);
-					remainSmallCarSpaces--;
 					v.enterParkedState(time, intendedDuration);
 				} else {
 					throw new SimulationException ("No Spaces.");
@@ -494,10 +486,10 @@ public class CarPark {
 		Car newCar = null;
 		MotorCycle newMotorCycle = null;
 		
-		if (sim.motorCycleTrial()) {
+		if (sim.motorCycleTrial()) { // create motorcycle if it allowed
 			newMotorCycle = new MotorCycle("MC" + (++count), time);
 			
-			try {
+			try { // use try-catch block to ensure it can park correctly
 				parkVehicle(newMotorCycle, time, sim.setDuration());
 				status += setVehicleMsg(newCar, "N", "P");
 			} catch (SimulationException nomcparkspaces) {

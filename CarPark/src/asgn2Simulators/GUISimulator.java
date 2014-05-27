@@ -54,7 +54,7 @@ public class GUISimulator extends JFrame implements Runnable {
 	 */
 	public static void main(String[] args) throws SimulationException, IOException, VehicleException {
             gui = new GUIRunner();
-            if (args.length == 10) {
+            if (args.length == 10) { // accept the command line arguments
                 int maxCarSpaces = Integer.parseInt(args[0]);
                 gui.setTxtMaxCarSpaces(maxCarSpaces);
                 int maxSmallCarSpaces = Integer.parseInt(args[1]);
