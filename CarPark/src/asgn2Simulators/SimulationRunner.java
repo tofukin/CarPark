@@ -48,6 +48,36 @@ public class SimulationRunner {
 	 * @throws SimulationException if Simulation constraints are violated 
 	 * @throws IOException on logging failures
 	 */
+	public void runGUISimulation(GUIRunner gui) throws VehicleException, SimulationException, IOException {
+		this.log.initialEntry(this.carPark,this.sim);
+		for (int time=0; time<=Constants.CLOSING_TIME; time++) {
+			//queue elements exceed max waiting time
+			if (!this.carPark.queueEmpty()) {
+				this.carPark.archiveQueueFailures(time);
+			}
+			//vehicles whose time has expired
+			if (!this.carPark.carParkEmpty()) {
+				//force exit at closing time, otherwise normal
+				boolean force = (time == Constants.CLOSING_TIME);
+				this.carPark.archiveDepartingVehicles(time, force);
+			}
+			//attempt to clear the queue 
+			if (!this.carPark.carParkFull()) {
+				this.carPark.processQueue(time,this.sim);
+			}
+			// new vehicles from minute 1 until the last hour
+			if (newVehiclesAllowed(time)) { 
+				this.carPark.tryProcessNewVehicles(time,this.sim);
+			}
+			//Log progress 
+			this.log.logEntry(time,this.carPark);
+                        gui.logEntry(time,this.carPark);
+
+		}
+		this.log.finalise(this.carPark);
+                gui.finalise(this.carPark);
+	}
+	
 	public void runSimulation() throws VehicleException, SimulationException, IOException {
 		this.log.initialEntry(this.carPark,this.sim);
 		for (int time=0; time<=Constants.CLOSING_TIME; time++) {

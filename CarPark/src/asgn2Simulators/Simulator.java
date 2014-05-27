@@ -116,9 +116,13 @@ public class Simulator {
 	 */
 	@Override
 	public String toString() {
-		return "Simulator [meanStay=" + meanStay + ", sdStay=" + sdStay
-				+ ", seed=" + seed + ", carProb=" + carProb + ", smallCarProb="
-				+ smallCarProb + ", mcProb=" + mcProb + "]";
+            return "Simulator \n"
+                    + "Intended Stay Mean: " + meanStay + "\n"
+                    + "Intended Stay SD: " + sdStay + "\n"
+                    + "RNG Seed: " + seed + "\n"
+                    + "Car Probabilities: " + carProb + "\n"
+                    + "Small Car Probabilities: " + smallCarProb + "\n"
+                    + "MotorCycle Porbabilities: " + mcProb + "\n";
 	}
 	
 	/**

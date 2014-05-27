@@ -44,17 +44,16 @@ import asgn2Simulators.Constants;
  */
 public abstract class Vehicle {
 	
-	private String vehID;
-	private int arrivalTime;
-	private int departureTime;
-	private int parkingTime;
-	private int intendedDuration;
-	private int exitTime;
-	private boolean isParked = false;
-	private boolean isQueued = false;
-	private boolean isSatisfied = false;
-	private boolean wasParked = false;
-	private boolean wasQueued = false;
+	private String vehID = "";
+	private int arrivalTime = 0;
+	private int departureTime = 0;
+	private int parkingTime = 0;
+	private int exitTime = 0;
+	private boolean isParked;
+	private boolean isQueued;
+	private boolean isSatisfied;
+	private boolean wasParked;
+	private boolean wasQueued;
 	
 	/**
 	 * Vehicle Constructor 
@@ -69,6 +68,11 @@ public abstract class Vehicle {
 			throw new VehicleException ("Arrival time cannot less then 0");
 		}
 		this.arrivalTime = arrivalTime;
+		isParked = false;
+		isQueued = false;
+		isSatisfied = false;
+		wasParked = false;
+		wasQueued = false;
 	}
 
 	/**
@@ -240,15 +244,15 @@ public abstract class Vehicle {
 		if (wasParked()) {
 			wasParked = "Entry to Car Park: " + getParkingTime()
 					+ "\n" + "Exit from Car Park: " + getDepartureTime()
-					+ "\n" + "Parking Time: " + (getDepartureTime() - .getParkingTime());
+					+ "\n" + "Parking Time: " + (getDepartureTime() - getParkingTime()) + "\n";
 		} else {
 			wasParked = "Vehicle was not parked \n";
 		}
 		
 		if (isSatisfied()) {
-			wasSatisfied = "Customer was satisfied";
+			wasSatisfied = "Customer was satisfied \n";
 		} else {
-			wasSatisfied = "Customer was not satisfied";
+			wasSatisfied = "Customer was not satisfied \n";
 		}
 		
 		return "Vehicle vehID: " + vehID + "\n"

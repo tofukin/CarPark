@@ -368,15 +368,20 @@ public class CarPark {
 		// Calculate the spaces remaining
 		if (v instanceof Car) {
 			if (((Car) v).isSmall()) {
-				numSmallCars++;
 				if (remainSmallCarSpaces > 1) {
+					numSmallCars++;
 					smallCarSpaces.add(v);
 					remainSmallCarSpaces--;
 					v.enterParkedState(time, intendedDuration);
 				} else {
-					carSpaces.add(v);
-					remainCarSpaces--;
-					v.enterParkedState(time, intendedDuration);
+					if (remainCarSpaces > 1) {
+						numSmallCars++;
+						carSpaces.add(v);
+						remainCarSpaces--;
+						v.enterParkedState(time, intendedDuration);
+					} else {
+						throw new SimulationException ("No Spaces.");
+					}					
 				}
 			} else {
 				numCars++;
@@ -385,15 +390,20 @@ public class CarPark {
 				v.enterParkedState(time, intendedDuration);
 			}
 		} else {
-			numMotorCycles++;
 			if (remainMotorCycleSpaces > 1) {
+				numMotorCycles++;
 				motorCycleSpaces.add(v);
 				remainMotorCycleSpaces--;
 				v.enterParkedState(time, intendedDuration);
 			} else {
-				smallCarSpaces.add(v);
-				remainSmallCarSpaces--;
-				v.enterParkedState(time, intendedDuration);
+				if (remainSmallCarSpaces > 1) {
+					numMotorCycles++;
+					smallCarSpaces.add(v);
+					remainSmallCarSpaces--;
+					v.enterParkedState(time, intendedDuration);
+				} else {
+					throw new SimulationException ("No Spaces.");
+				}
 			}
 		}
 	}
@@ -410,10 +420,14 @@ public class CarPark {
 		temp.clear();
 		temp.addAll(queue);
 		for (Vehicle v : temp) {
-			if (spacesAvailable(v)) {
-				exitQueue(v, time);
-				parkVehicle(v, time, sim.setDuration());
-				status += setVehicleMsg(v, "Q", "P");
+			try {
+				if (spacesAvailable(v)) {
+					exitQueue(v, time);
+					parkVehicle(v, time, sim.setDuration());
+					status += setVehicleMsg(v, "Q", "P");
+				}
+			} catch (SimulationException e) {
+				continue;
 			}
 		}
 		archiveQueueFailures(time);
@@ -444,12 +458,12 @@ public class CarPark {
 	public boolean spacesAvailable(Vehicle v) {
 		if (v instanceof Car) {
 			if (((Car)v).isSmall()) {
-				return (remainCarSpaces > 0 || remainSmallCarSpaces > 0);
+				return (smallCarSpaces.size() < maxSmallCarSpaces || carSpaces.size() < (maxCarSpaces - maxSmallCarSpaces));
 			} else {
-				return (remainCarSpaces > 0);
+				return (carSpaces.size() < (maxCarSpaces - maxSmallCarSpaces));
 			}
 		} else {
-			return (remainSmallCarSpaces > 0 || remainMotorCycleSpaces > 0);
+			return (motorCycleSpaces.size() < maxMotorCycleSpaces || smallCarSpaces.size() < maxSmallCarSpaces);
 		}
 	}
 
@@ -483,16 +497,16 @@ public class CarPark {
 		if (sim.motorCycleTrial()) {
 			newMotorCycle = new MotorCycle("MC" + (++count), time);
 			
-			if (spacesAvailable(newMotorCycle)) {
+			try {
 				parkVehicle(newMotorCycle, time, sim.setDuration());
 				status += setVehicleMsg(newCar, "N", "P");
-			} else {
-				if (queueFull()) {
-					archiveNewVehicle(newMotorCycle);
-					status += setVehicleMsg(newMotorCycle, "N", "A");	
-				} else {
+			} catch (SimulationException nomcparkspaces) {
+				try {
 					enterQueue(newMotorCycle);
 					status += setVehicleMsg(newMotorCycle, "N", "Q");
+				} catch (SimulationException nomcqueue) {
+					archiveNewVehicle(newMotorCycle);
+					status += setVehicleMsg(newMotorCycle, "N", "A");	
 				}
 			}
 		}
@@ -505,18 +519,18 @@ public class CarPark {
 				newCar = new Car("C" + (++count), time, false);
 			}
 			
-			if (spacesAvailable(newCar)) {
+			try {
 				parkVehicle(newCar, time, sim.setDuration());
 				status += setVehicleMsg(newCar, "N", "P");
-			} else {
-				if (!queueFull()) {
+			} catch (SimulationException nocarparkspaces) {
+				try {
 					enterQueue(newCar);
 					status += setVehicleMsg(newMotorCycle, "N", "Q");
-				} else {
+				} catch (SimulationException nocarqueue) {
 					archiveNewVehicle(newCar);
 					status += setVehicleMsg(newMotorCycle, "N", "A");
 				}
-			}
+			}			
 		}		
 	}
 
@@ -604,4 +618,12 @@ public class CarPark {
 		}
 		return "|"+str+":"+source+">"+target+"|";
 	}
+        
+        public int getCount() {
+            return count;
+        }
+        
+        public int getNumDissatisfied() {
+            return numDissatisfied;
+        }
 }

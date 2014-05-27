@@ -71,21 +71,21 @@ public class Car extends Vehicle {
 		if (super.wasParked()) {
 			wasParked = "Entry to Car Park: " + super.getParkingTime()
 					+ "\n" + "Exit from Car Park: " + super.getDepartureTime()
-					+ "\n" + "Parking Time: " + (super.getDepartureTime() - super.getParkingTime());
+					+ "\n" + "Parking Time: " + (super.getDepartureTime() - super.getParkingTime()) + "\n";
 		} else {
 			wasParked = "Vehicle was not parked \n";
 		}
 		
 		if (super.isSatisfied()) {
-			wasSatisfied = "Customer was satisfied";
+			wasSatisfied = "Customer was satisfied \n";
 		} else {
-			wasSatisfied = "Customer was not satisfied";
+			wasSatisfied = "Customer was not satisfied \n";
 		}
-		
+		 
 		if (isSmall()) {
-			isSmall = "Car can use small parking space";
+			isSmall = "Car can use small parking space \n";
 		} else {
-			isSmall = "Car cannot use small parking space";
+			isSmall = "Car cannot use small parking space \n";
 		}
 		
 		return "Vehicle vehID: " + vehID + "\n"
