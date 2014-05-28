@@ -14,11 +14,12 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import asgn2Exceptions.SimulationException;
 import asgn2Exceptions.VehicleException;
 import asgn2Vehicles.Car;
 
 /**
- * @author hogan
+ * @author Kou Cheng Fan
  *
  */
 public class CarTests {
@@ -28,9 +29,17 @@ public class CarTests {
 	private int zeroArrivalTime = 0;
 	private int negativeArrivalTime = -1;
 
+	/**
+	 * Test if archive departing vehicle is success when
+	 * the vehicle has stayed its intended duration but not forced to depart.
+	 * @throws VehicleException 
+	 * @throws SimulationException 
+	 * 
+	 */
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Car#isSmall()}.
+	 * Return true if it is small car.
 	 * @throws VehicleException 
 	 */
 	@Test
@@ -39,26 +48,52 @@ public class CarTests {
 		assertTrue(car.isSmall());
 	}
 	
+	/**
+	 * Test method for {@link asgn2Vehicles.Car#isSmall()}.
+	 * Return true if it is not small car.
+	 * @throws VehicleException 
+	 */
+	
 	@Test
 	public void testNotSmall() throws VehicleException {
 		Car car = new Car(CarID, arrivalTime, false);
 		assertFalse(car.isSmall());
 	}
 	
+	/**
+	 * Throw VehicleException if it comes with negativeArrival time.
+	 * @throws VehicleException 
+	 */
+	
 	@Test (expected = VehicleException.class)
 	public void testCarNegativeArrival() throws VehicleException {
 		Car car = new Car(CarID, negativeArrivalTime, false);
 	}
+	
+	/**
+	 * Throw VehicleException if it comes with Zero Arrival time.
+	 * @throws VehicleException 
+	 */
 	
 	@Test (expected = VehicleException.class)
 	public void testCarZeroArrival() throws VehicleException {
 		Car car = new Car(CarID, zeroArrivalTime, false);
 	}
 	
+	/**
+	 * Test is it no problem with correct values.
+	 * @throws VehicleException 
+	 */
+	
 	@Test
 	public void testCarPositiveArrival() throws VehicleException {
 		Car car = new Car(CarID, arrivalTime, false);
 	}
+	
+	/**
+	 * Test getVehID that comes the same Vehicle ID.
+	 * @throws VehicleException 
+	 */
 	
 	@Test
 	public void testCarVehID() throws VehicleException {

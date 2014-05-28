@@ -22,7 +22,7 @@ import asgn2Vehicles.Car;
 import asgn2Vehicles.MotorCycle;
 
 /**
- * @author hogan
+ * @author Kou Cheng Fan 
  *
  */
 public class MotorCycleTests {
@@ -36,16 +36,37 @@ public class MotorCycleTests {
 	private int exitTime = 3;
 	private int departureTime = 22;
 	
+	/**
+	 * Throws if that comes with a negtaive arrival Time.
+	 * @throws VehicleException 
+	 * @throws SimulationException 
+	 * 
+	 */
+	
 	@Test (expected = VehicleException.class)
 	public void testNegativeArrival() throws VehicleException {
 		MotorCycle mc = new MotorCycle(MCID, negativeArrivalTime);
 	}
+	
+	/**
+	 * test is it no problem with correct values.
+	 * @throws VehicleException 
+	 * @throws SimulationException 
+	 * 
+	 */
 	
 	@Test
 	public void testArrival() throws VehicleException {
 		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
 	}
 	
+	
+	/**
+	 * Throws if that comes with a zero arrival Time.
+	 * @throws VehicleException 
+	 * @throws SimulationException 
+	 * 
+	 */
 	@Test (expected = VehicleException.class)
 	public void testZeroArrival() throws VehicleException {
 		MotorCycle mc = new MotorCycle(MCID, zeroArrivalTime);
@@ -53,6 +74,7 @@ public class MotorCycleTests {
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#getVehID()}.
+	 * Test is it able to return a correct Vehicle ID.
 	 * @throws VehicleException 
 	 */
 	@Test
@@ -63,6 +85,7 @@ public class MotorCycleTests {
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#getArrivalTime()}.
+	 * Test is it able to return a correct arrival time.
 	 * @throws VehicleException 
 	 */
 	@Test
@@ -73,6 +96,7 @@ public class MotorCycleTests {
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#enterQueuedState()}.
+	 * Test is it able to enter the queue.
 	 * @throws VehicleException 
 	 */
 	@Test
@@ -82,12 +106,23 @@ public class MotorCycleTests {
 		assertTrue(mc.isQueued());
 	}
 	
+	/**
+	 * Throws if a queued motorCycle enter queue again.
+	 * @throws VehicleException 
+	 */
+	
 	@Test (expected = VehicleException.class)
 	public void testDoubleQueued() throws VehicleException {
 		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
 		mc.enterQueuedState();
 		mc.enterQueuedState();
 	}
+	
+	/**
+	 * Throws exception if a parked motorCycle enter queue
+	 * @throws VehicleException 
+	 */
+	
 	
 	@Test (expected = VehicleException.class)
 	public void testParkedAndQueue() throws VehicleException {
@@ -96,11 +131,23 @@ public class MotorCycleTests {
 		mc.enterQueuedState();
 	}
 	
+	
+	/**
+	 * Throws exception if a not queued motorCycle going to exit queue 
+	 * @throws VehicleException 
+	 */
+	
 	@Test (expected = VehicleException.class)
 	public void textExitQueuedStateWhileNotInQueue() throws VehicleException {
 		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
 		mc.exitQueuedState(exitTime);
 	}
+	
+	
+	/**
+	 * Throws exception if a parked motorCycle going to exit queue 
+	 * @throws VehicleException 
+	 */
 	
 	@Test (expected = VehicleException.class)
 	public void textExitQueuedStateWhileParked() throws VehicleException {
@@ -109,12 +156,21 @@ public class MotorCycleTests {
 		mc.exitQueuedState(exitTime);
 	}
 	
+	/**
+	 * Throws exception if exit Time less than arrivalTime.
+	 * @throws VehicleException 
+	 */
+	
 	@Test (expected = VehicleException.class)
 	public void testExitQueuedStateWhileExitTimeNotLaterThenArrivalTime() throws VehicleException {
 		int arrivalTimeTen = 10;
 		MotorCycle mc = new MotorCycle(MCID, arrivalTimeTen);
 		mc.exitQueuedState(exitTime);
 	}
+	
+	/** Return false if the motorCycle is not parked.
+	 * @throws VehicleException 
+	 */
 	
 	@Test
 	public void testExitQueuedStateGetIsParked() throws VehicleException {
@@ -124,6 +180,11 @@ public class MotorCycleTests {
 		assertFalse(mc.isParked());
 	}
 	
+	/** Return true if the motorCycle was queued.
+	 * @throws VehicleException 
+	 */
+	
+	
 	@Test
 	public void testExitQueuedStateGetWasParked() throws VehicleException {
 		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
@@ -132,7 +193,8 @@ public class MotorCycleTests {
 		assertTrue(mc.wasQueued());
 	}
 
-	/**
+	/** Test if is it works that the new motorcycle is able to enter the parked state with 
+	 * correct values.
 	 * Test method for {@link asgn2Vehicles.Vehicle#enterParkedState(int, int)}.
 	 * @throws VehicleException 
 	 */
@@ -142,6 +204,10 @@ public class MotorCycleTests {
 		mc.enterParkedState(parkingTime, intendedDuration);
 	}
 	
+	/**Throws exception if a parked motorcycle going park again.
+	 * @throws VehicleException 
+	 */
+	
 	@Test (expected = VehicleException.class)
 	public void testEnterParkedStateWhileParked() throws VehicleException {
 		int parkT = 4;
@@ -150,6 +216,9 @@ public class MotorCycleTests {
 		mc.enterParkedState(parkingTime, intendedDuration);
 		mc.enterParkedState(parkT, intend);
 	}
+	/**Throws exception if a queued motorcycle going park again.
+	 * @throws VehicleException 
+	 */
 	
 	@Test (expected = VehicleException.class)
 	public void testEnterParkedStateWhileInQueue() throws VehicleException {
@@ -157,6 +226,9 @@ public class MotorCycleTests {
 		mc.enterQueuedState();
 		mc.enterParkedState(parkingTime, intendedDuration);
 	}
+	/**Throws exception if a motorcycle going to park but with negative arrival time.
+	 * @throws VehicleException 
+	 */
 	
 	@Test (expected = VehicleException.class)
 	public void testEnterParkedStateWhileParkingTimeLessThanZero() throws VehicleException {
@@ -165,12 +237,23 @@ public class MotorCycleTests {
 		mc.enterParkedState(parkT, intendedDuration);
 	}
 	
+	/**Throws exception if a motorcycle going to park but duration 
+	 * time less that minimum.
+	 * @throws VehicleException 
+	 */
+	
+	
 	@Test (expected = VehicleException.class)
 	public void testEnterParkedStateWhileDurationLessThanMinimun() throws VehicleException {
 		int intend = 10;
 		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
 		mc.enterParkedState(parkingTime, intend);
 	}
+	
+	/** return true if the expected departure time is equal the departure time.
+	 * @throws VehicleException 
+	 */
+	
 	
 	@Test
 	public void testEnterParkedStateGetDepartureTime() throws VehicleException {
@@ -179,6 +262,11 @@ public class MotorCycleTests {
 		assertEquals(parkingTime + intendedDuration, mc.getDepartureTime());
 	}
 	
+	/**Return true if the motorcycle is able to parked with correct values.
+	 * @throws VehicleException 
+	 */
+	
+	
 	@Test
 	public void testEnterParkedStateIsParked() throws VehicleException {
 		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
@@ -186,6 +274,10 @@ public class MotorCycleTests {
 		assertTrue(mc.isParked());
 	}
 
+	/**Throws exception if a not parked motorcycle going to exit.
+	 * @throws VehicleException 
+	 */
+	
 	
 	@Test (expected = VehicleException.class)
 	public void testExitParkedStateWhereNotParked() throws VehicleException {
@@ -193,12 +285,22 @@ public class MotorCycleTests {
 		mc.exitParkedState(departureTime);
 	}
 	
+	/**Throws exception if a queued motorcycle going to exit.
+	 * @throws VehicleException 
+	 */
+	
+	
 	@Test (expected = VehicleException.class)
 	public void testExitParkedStateWhereInQueue() throws VehicleException {
 		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
 		mc.enterQueuedState();
 		mc.exitParkedState(departureTime);
 	}
+	
+	/**Throws exception if a motorcycle going to exit but departure time earlier that parking 
+	 * time.
+	 * @throws VehicleException 
+	 */
 	
 	@Test (expected = VehicleException.class)
 	public void testExitParkedStateWhereDepartureTimeEarlierThenParkingTime() throws VehicleException {
@@ -208,6 +310,10 @@ public class MotorCycleTests {
 		mc.exitParkedState(departureTime);
 	}
 	
+	
+	/**test is it works well about the isParked method.
+	 * @throws VehicleException 
+	 */
 	@Test
 	public void testExitParkedStateGetIsParked() throws VehicleException {
 		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
@@ -215,6 +321,10 @@ public class MotorCycleTests {
 		mc.exitParkedState(departureTime);
 		assertFalse(mc.isParked());
 	}
+	
+	/**Test exit parked State get Was Parked.
+	 * @throws VehicleException 
+	 */
 	
 	@Test
 	public void testExitParkedStateGetWasParked() throws VehicleException {
@@ -224,7 +334,7 @@ public class MotorCycleTests {
 		assertTrue(mc.wasParked());
 	}
 
-	/**
+	/**Test the isParked method is it work well.
 	 * Test method for {@link asgn2Vehicles.Vehicle#isParked()}.
 	 * @throws VehicleException 
 	 */
@@ -235,6 +345,11 @@ public class MotorCycleTests {
 		assertTrue(mc.isParked());
 	}
 	
+	/**Test the isParked method is it work well.
+	 * Test method for {@link asgn2Vehicles.Vehicle#isParked()}.
+	 * @throws VehicleException 
+	 */
+	
 	@Test
 	public void testIsNotParked() throws VehicleException {
 		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
@@ -242,7 +357,7 @@ public class MotorCycleTests {
 	}
 	
 
-	/**
+	/**Test the isQueued method is it work well.
 	 * Test method for {@link asgn2Vehicles.Vehicle#isQueued()}.
 	 * @throws VehicleException 
 	 */
@@ -253,13 +368,18 @@ public class MotorCycleTests {
 		assertTrue(mc.isQueued());
 	}
 	
+	/**Test the isQueued method is it work well.
+	 * Test method for {@link asgn2Vehicles.Vehicle#isQueued()}.
+	 * @throws VehicleException 
+	 */
+	
 	@Test
 	public void testIsNotQueued() throws VehicleException {
 		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
 		assertFalse(mc.isQueued());
 	}
 
-	/**
+	/**Test the get parking time method is it work well.
 	 * Test method for {@link asgn2Vehicles.Vehicle#getParkingTime()}.
 	 * @throws VehicleException 
 	 */
@@ -270,8 +390,8 @@ public class MotorCycleTests {
 		assertEquals(parkingTime, mc.getParkingTime());
 	}
 
-	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#getDepartureTime()}.
+	/**Test the get parking time method is it work well.
+	 * Test method for {@link asgn2Vehicles.Vehicle#getParkingTime()}.
 	 * @throws VehicleException 
 	 */
 	@Test
@@ -282,7 +402,7 @@ public class MotorCycleTests {
 		assertEquals(departureTime, mc.getDepartureTime());
 	}
 
-	/**
+	/**Test the  wasQueued method is it work well.
 	 * Test method for {@link asgn2Vehicles.Vehicle#wasQueued()}.
 	 * @throws VehicleException 
 	 */
@@ -294,13 +414,17 @@ public class MotorCycleTests {
 		assertTrue(mc.wasQueued());
 	}
 	
+	/**Test the  wasQueued method is it work well.
+	 * Test method for {@link asgn2Vehicles.Vehicle#wasQueued()}.
+	 * @throws VehicleException 
+	 */
 	@Test
 	public void testWasNotQueued() throws VehicleException {
 		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
 		assertFalse(mc.wasQueued());
 	}
 
-	/**
+	/**Test the  wasParked method is it work well.
 	 * Test method for {@link asgn2Vehicles.Vehicle#wasParked()}.
 	 * @throws VehicleException 
 	 */
@@ -312,23 +436,19 @@ public class MotorCycleTests {
 		assertTrue(mc.wasParked());
 	}
 	
+	/**Test the  wasParked method is it work well.
+	 * Test method for {@link asgn2Vehicles.Vehicle#wasParked()}.
+	 * @throws VehicleException 
+	 */
 	@Test
 	public void testWasNotParked() throws VehicleException {
 		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
 		assertFalse(mc.wasParked());
 	}
 
-	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#isSatisfied()}.
+	/**Test the  isSatisfied method is it work well.
+	 * @throws VehicleException 
 	 */
-	@Test
-	public void testIsSatisfied() throws VehicleException {
-		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
-		mc.enterParkedState(parkingTime, intendedDuration);
-		mc.exitParkedState(departureTime);
-		assertTrue(mc.isSatisfied());
-	}
-	
 	@Test
 	public void testIsNotSatisfied() throws VehicleException {
 		MotorCycle mc = new MotorCycle(MCID, arrivalTime);
